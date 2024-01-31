@@ -3,9 +3,9 @@ use image::{save_buffer, DynamicImage, GenericImageView};
 use std::process::Command;
 use std::{io, thread};
 
-const DEST: &str = "/tmp/lock-blur.png";
 fn main() -> io::Result<()> {
-    let count = thread::available_parallelism()?get();
+    let count = thread::available_parallelism()?.get();
+    let dest = "/tmp/lock-blur.png";
     println!("Using {} threads", count);
     // create a temp image
     let mut command = Command::new("grim")
@@ -14,7 +14,7 @@ fn main() -> io::Result<()> {
         .expect("failed to execute process");
     let image = image::open("/tmp/lock.png").unwrap();
     let blur_image = image.blur(5.0);
-    generate_image(DEST, &blur_image);
+    generate_image(dest, &blur_image);
     command = Command::new("swaylock")
         .arg("-i")
         .arg("/tmp/lock.png")
@@ -24,9 +24,9 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn generate_image(DEST: &str, blur_image: &DynamicImage) {
+fn generate_image(dest: &str, blur_image: &DynamicImage) {
     save_buffer(
-        DEST,
+        dest,
         &blur_image.to_rgb8(),
         blur_image.width(),
         blur_image.height(),

@@ -55,3 +55,8 @@ dkms.conf
 # Added by cargo
 
 /target
+
+# Devenv
+.devenv*
+devenv.local.nix
+.direnv/
